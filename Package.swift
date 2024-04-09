@@ -13,6 +13,7 @@ let package = Package(
     products: [
         .library(
             name: "CameraPermission",
+            type: .dynamic,
             targets: ["CameraPermission"]
         ),
         .library(
