@@ -17,62 +17,77 @@ let package = Package(
         ),
         .library(
             name: "PhotoLibraryPermission",
+            type: .dynamic,
             targets: ["PhotoLibraryPermission"]
         ),
         .library(
             name: "NotificationPermission",
+            type: .dynamic,
             targets: ["NotificationPermission"]
         ),
         .library(
             name: "MicrophonePermission",
+            type: .dynamic,
             targets: ["MicrophonePermission"]
         ),
         .library(
             name: "CalendarPermission",
+            type: .dynamic,
             targets: ["CalendarPermission"]
         ),
         .library(
             name: "ContactsPermission",
+            type: .dynamic,
             targets: ["ContactsPermission"]
         ),
         .library(
             name: "RemindersPermission",
+            type: .dynamic,
             targets: ["RemindersPermission"]
         ),
         .library(
             name: "SpeechRecognizerPermission",
+            type: .dynamic,
             targets: ["SpeechRecognizerPermission"]
         ),
         .library(
             name: "LocationPermission",
+            type: .dynamic,
             targets: ["LocationPermission"]
         ),
         .library(
             name: "MotionPermission",
+            type: .dynamic,
             targets: ["MotionPermission"]
         ),
         .library(
             name: "MediaLibraryPermission",
+            type: .dynamic,
             targets: ["MediaLibraryPermission"]
         ),
         .library(
             name: "BluetoothPermission",
+            type: .dynamic,
             targets: ["BluetoothPermission"]
         ),
         .library(
             name: "TrackingPermission",
+            type: .dynamic,
             targets: ["TrackingPermission"]
         ),
         .library(
             name: "FaceIDPermission",
+            type: .dynamic,
             targets: ["FaceIDPermission"]
         ),
         .library(
             name: "SiriPermission",
+            type: .dynamic,
             targets: ["SiriPermission"]
         ),
         .library(
             name: "HealthPermission",
+            type: .dynamic,
             targets: ["HealthPermission"]
         ),
     ],
