@@ -1,6 +1,6 @@
 # PermissionsKit 
 
-Universal API for request permission and get its statuses. Available `.authorized`, `.denied` & `.notDetermined`.
+Universal API for request permission and get its statuses — available `.authorized`, `.denied` & `.notDetermined`.
 
 <p float="left">
     <img src="https://cdn.sparrowcode.io/github/permissionskit/icons/camera.png" width="38">
@@ -21,14 +21,11 @@ Universal API for request permission and get its statuses. Available `.authorize
     <img src="https://cdn.sparrowcode.io/github/permissionskit/icons/siri.png" width="38">
 </p>
 
-### Community
+### iOS Dev Community
 
 <p float="left">
-    <a href="https://twitter.com/sparrowcode_en">
-        <img src="https://cdn.sparrowcode.io/github%2Fbadges%2Ftwitter.png?version=4" height="52">
-    </a>
-    <a href="https://t.me/sparrowcode_en">
-        <img src="https://cdn.sparrowcode.io/github/badges/telegram.png?version=1" height="52">
+    <a href="https://twitter.com/i/communities/1730194338489987403">
+        <img src="https://cdn.sparrowcode.io/github/badges/x-community.png?version=1" height="52">
     </a>
     <a href="#apps-using">
         <img src="https://cdn.sparrowcode.io/github/badges/download-on-the-appstore.png?version=4" height="52">
@@ -41,9 +38,10 @@ Universal API for request permission and get its statuses. Available `.authorize
 - [Installation](#installation)
     - [Swift Package Manager](#swift-package-manager)
     - [CocoaPods](#cocoapods)
+    - [Why Modules](#why-modules)
 - [Usage](#request-permission)
     - [Request Permission](#request-permission)
-    - [Status Permission](#status-permission)
+    - [Get Status Permission](#get-status-permission)
 - [Keys in Info.plist](#keys-in-infoplist)
     - [Localisations](#localisation)
 - [Apps Using](#apps-using)
@@ -56,7 +54,7 @@ Universal API for request permission and get its statuses. Available `.authorize
 | <img src="https://cdn.sparrowcode.io/github/permissionskit/icons/calendar.png" width="38"> | Calendar | NSCalendarsUsageDescription, NSCalendarsFullAccessUsageDescription, NSCalendarsWriteOnlyAccessUsageDescription | ✅ | ✅ |
 | <img src="https://cdn.sparrowcode.io/github/permissionskit/icons/camera.png" width="38"> | Camera | NSCameraUsageDescription | ✅ | ✅ |
 | <img src="https://cdn.sparrowcode.io/github/permissionskit/icons/contacts.png" width="38"> | Contacts | NSContactsUsageDescription | ✅ | ✅ |
-| <img src="https://cdn.sparrowcode.io/github/permissionskit/icons/faceid.png" width="38"> | FaceID | NSFaceIDUsageDescription | ✅ | ✅ |
+| <img src="https://cdn.sparrowcode.io/github/permissionskit/icons/faceid.png" width="38"> | FaceID | NSFaceIDUsageDescription | ☑️ | ✅ |
 | <img src="https://cdn.sparrowcode.io/github/permissionskit/icons/health.png" width="38"> | Health | NSHealthUpdateUsageDescription, NSHealthShareUsageDescription | ✅ | ✅ |
 | <img src="https://cdn.sparrowcode.io/github/permissionskit/icons/location.png" width="38"> | Location | NSLocationAlwaysAndWhenInUseUsageDescription NSLocationWhenInUseUsageDescription | ✅ | ✅ |
 | <img src="https://cdn.sparrowcode.io/github/permissionskit/icons/music.png" width="38"> | Media Library | NSAppleMusicUsageDescription | ✅ | ✅ |
@@ -71,7 +69,7 @@ Universal API for request permission and get its statuses. Available `.authorize
 
 ## Installation
 
-Ready to use on iOS 11+. Supports iOS, tvOS and `SwiftUI`.
+Ready to use on iOS 11+. Supports iOS, tvOS. Working with `UIKit` and `SwiftUI`.
 
 ### Swift Package Manager
 
@@ -81,12 +79,12 @@ In Xcode go to Project -> Your Project Name -> `Package Dependencies` -> Tap *Pl
 https://github.com/sparrowcode/PermissionsKit
 ```
 
-Next, choose the permissions you need. But don't add all of them, because apple will reject app.
+Next, choose the permissions that you need. But don't add all of them, because apple will reject app.
 Or adding it to the `dependencies` of your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/sparrowcode/PermissionsKit", .upToNextMajor(from: "9.0.0"))
+    .package(url: "https://github.com/sparrowcode/PermissionsKit", .upToNextMajor(from: "10.0.1"))
 ]
 ```
 
@@ -94,9 +92,9 @@ and choose valid targets.
 
 ### CocoaPods:
 
-This is an outdated way of doing things. I advise you to use [SPM](#swift-package-manager). However, I will continue to support Cocoapods for some time.
+This is an outdated way. I advise you to use [SPM](#swift-package-manager). However, I will continue to support Cocoapods for some time.
 
-<details><summary>Cocoapods Instalation</summary>
+<details><summary>Cocoapods Installation</summary>
 
 [CocoaPods](https://cocoapods.org) is a dependency manager. For usage and installation instructions, visit their website. To integrate using CocoaPods, specify it in your `Podfile`:
 
@@ -127,6 +125,13 @@ pod 'PermissionsKit/HealthPermission', :git => 'https://github.com/sparrowcode/P
 ```
 </details>
 
+## Why Modules
+
+If put all code to one package and compile it, Apple Review Team will see a lot of calls to permissions API and ask you provide reason why you really need it permissions. Modules allow compile only really using code parts. Just select only which you need.
+
+> [!WARNING]
+> Import only the permissions you really need.
+
 ## Request Permission
 
 ```swift
@@ -138,7 +143,7 @@ Permission.notification.request {
 }
 ```
 
-## Status Permission
+## Get Status Permission
 
 ```swift
 import PermissionsKit
@@ -147,16 +152,19 @@ import NotificationPermission
 let authorized = Permission.notification.authorized
 ```
 
-## Keys in Info.plist
+> [!WARNING]
+> For FaceID permission no way detect if request `.authorized` or `.notDetermined` accurate. Status `.denied` detect well. For now for both states return `.notDetermined`. 
 
-You need to add some keys to the `Info.plist` file with descriptions, per Apple's requirements. You can get a plist of keys for permissions as follows:
+## Keys in `Info.plist`
+
+You need to add some strings to the `Info.plist` file with descriptions per Apple's requirements. You can get a plist of keys for permissions as follows:
 
 ```swift
 let key = Permission.bluetooth.usageDescriptionKey
 ```
 
-> **Warning**
-> Do not use the description as the name of the key.
+> [!NOTE]
+> Do not use the description as the name of the key. Xcode can't build this.
 
 ### Localisation
 
@@ -172,10 +180,10 @@ If you use xliff localization export, keys will be create automatically. If you 
     <a href="https://apps.apple.com/app/id1487937127"><img src="https://cdn.sparrowcode.io/github/apps-using/id1487937127.png?version=2" height="65"></a>
     <a href="https://apps.apple.com/app/id1624477055"><img src="https://cdn.sparrowcode.io/github/apps-using/id1624477055.png?version=2" height="65"></a>
     <a href="https://apps.apple.com/app/id1625641322"><img src="https://cdn.sparrowcode.io/github/apps-using/id1625641322.png?version=2" height="65"></a>
+    <a href="https://apps.apple.com/app/id1625641322"><img src="https://cdn.sparrowcode.io/github/apps-using/id6449774982.png?version=2" height="65"></a>
     <a href="https://apps.apple.com/app/id875280793"><img src="https://cdn.sparrowcode.io/github/apps-using/id875280793.png?version=2" height="65"></a>
     <a href="https://apps.apple.com/app/id743843090"><img src="https://cdn.sparrowcode.io/github/apps-using/id743843090.png?version=2" height="65"></a>
     <a href="https://apps.apple.com/app/id537070378"><img src="https://cdn.sparrowcode.io/github/apps-using/id537070378.png?version=2" height="65"></a>
-    <a href="https://apps.apple.com/app/id1570676244"><img src="https://cdn.sparrowcode.io/github/apps-using/id1570676244.png?version=2" height="65"></a>
     <a href="https://apps.apple.com/app/id1617055933"><img src="https://cdn.sparrowcode.io/github/apps-using/id1617055933.png?version=2" height="65"></a>
     <a href="https://apps.apple.com/app/id1596657751"><img src="https://cdn.sparrowcode.io/github/apps-using/id1596657751.png?version=2" height="65"></a>
     <a href="https://apps.apple.com/app/id1459483980"><img src="https://cdn.sparrowcode.io/github/apps-using/id1459483980.png?version=2" height="65"></a>
@@ -183,4 +191,4 @@ If you use xliff localization export, keys will be create automatically. If you 
     <a href="https://apps.apple.com/app/id6452079114"><img src="https://cdn.sparrowcode.io/github/apps-using/id6452079114.png" height="65"></a>
 </p>
 
-If you use a `PermissionsKit`, add your application via Pull Request.
+If you use a `PermissionsKit`, add your app via Pull Request.
